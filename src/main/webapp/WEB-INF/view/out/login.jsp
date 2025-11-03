@@ -22,7 +22,7 @@
 						<td><input type="paswword" name="pw" id="pw"></td></td>
 					</tr>
 				</table>
-				<button type="button">로그인</button>
+				<button type="submit">로그인</button>
 			</div>
 			<div>
 				<input type="radio" name="customerOrEmpSel" class="customerOrEmpSel" value="customer" checked>customer
@@ -30,6 +30,6 @@
 			</div>
 		</div>
 	</form>
-	<a href="${pageContext.request.contextPath}/out/addMember">회원가입</a>
+	<a href="${pageContext.request.contextPath}/out/addCustomer">회원가입</a>
 </body>
 </html>

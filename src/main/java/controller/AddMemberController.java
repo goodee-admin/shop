@@ -7,11 +7,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/emp/empIndex")
-public class EmpIndexController extends HttpServlet {
-
+@WebServlet("/out/addCustomer")
+public class AddMemberController extends HttpServlet {
+	// 폼
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/view/emp/empIndex.jsp").forward(request, response);
+		// addMember.jsp
 	}
 
+	// 액션
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// CustomerDao.insertCustomer(Customer)
+		response.sendRedirect(request.getContextPath()+"/out/login"); 
+	}
 }
