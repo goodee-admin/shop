@@ -15,6 +15,8 @@ public class IdCkRestController extends HttpServlet {
 		response.setContentType("application/json");
 		
 		// CustomerDao.selectCustomerIdCheck()
+		
+		// out타입은 json문자열(gson 라이브러리 사용)
 	}
 
 }

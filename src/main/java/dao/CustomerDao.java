@@ -8,6 +8,22 @@ import java.sql.SQLException;
 import dto.Customer;
 
 public class CustomerDao {
+	// ID 사용가능 여부
+	// return : null 사용가능 ID, 아니면 사용불가 ID
+	public String selectCustomerIdCheck(String id) throws SQLException {
+		String sql = """
+			select t.id
+			from
+				(select customer_id id from customer
+				union all
+				select emp_id id from emp
+				union all
+				select id from outid) t
+				where t.id = ?	
+		""";
+		return null;
+	}
+	
 	// 로그인
 	public Customer selectCustomerByLogin(Customer c) throws SQLException {
 		Connection conn = null;

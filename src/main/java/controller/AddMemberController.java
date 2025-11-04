@@ -11,7 +11,8 @@ import java.io.IOException;
 public class AddMemberController extends HttpServlet {
 	// 폼
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// addMember.jsp
+		// /out/addMember.jsp
+		request.getRequestDispatcher("/WEB-INF/view/out/addMember.jsp").forward(request, response);
 	}
 
 	// 액션
