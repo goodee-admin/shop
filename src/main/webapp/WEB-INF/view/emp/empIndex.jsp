@@ -10,6 +10,10 @@
 
 <body>
 	<h1>empIndex</h1>
+		<!-- emp meun include -->
+		<c:import url="/WEB-INF/view/inc/empMenu.jsp"></c:import>
+		<hr>
+		
 		<div>
 		${loginEmp.empName}님 반갑습니다.
 		<a href="${pageContext.request.contextPath}/emp/empLogout">로그아웃</a>

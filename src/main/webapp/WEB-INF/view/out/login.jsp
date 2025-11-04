@@ -15,18 +15,18 @@
 				<table>
 					<tr>
 						<td>id</td>
-						<td><input type="text" name="id" id="id"></td>
+						<td><input value="emp1" type="text" name="id" id="id"></td>
 					</tr>
 					<tr>
 						<td>pw</td>
-						<td><input type="paswword" name="pw" id="pw"></td></td>
+						<td><input value="1234" type="paswword" name="pw" id="pw"></td></td>
 					</tr>
 				</table>
 				<button type="submit">로그인</button>
 			</div>
 			<div>
-				<input type="radio" name="customerOrEmpSel" class="customerOrEmpSel" value="customer" checked>customer
-				<input type="radio" name="customerOrEmpSel" class="customerOrEmpSel" value="emp">emp
+				<input type="radio" name="customerOrEmpSel" class="customerOrEmpSel" value="customer">customer
+				<input type="radio" name="customerOrEmpSel" class="customerOrEmpSel" value="emp" checked>emp
 			</div>
 		</div>
 	</form>
