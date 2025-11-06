@@ -20,10 +20,12 @@ public class AddAddressController extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// request.getParameter()
-		Address address = new Address();
-		addressDao = new AddressDao();
-		addressDao.insertAddress(address);
+		String[] addressArr = request.getParameterValues("address");
+		String address = String.join(" ", addressArr);
+		System.out.println("address: " + address);
+		// Address address = new Address();
+		// addressDao = new AddressDao();
+		// addressDao.insertAddress(address);
 		
 		response.sendRedirect(request.getContextPath()+"/customer/addressList");
 	}
