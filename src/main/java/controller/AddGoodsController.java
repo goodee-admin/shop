@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.UUID;
 
+import dao.GoodsDao;
 import dto.Emp;
 import dto.Goods;
 import dto.GoodsImg;
@@ -20,7 +21,8 @@ import jakarta.servlet.http.Part;
 
 @WebServlet("/emp/addGoods")
 public class AddGoodsController extends HttpServlet {
-
+	private GoodsDao goodsDao;
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/view/emp/addGoods.jsp").forward(request, response);
 	}
@@ -57,12 +59,12 @@ public class AddGoodsController extends HttpServlet {
 		goods.setGoodsPrice(Integer.parseInt(goodsPrice));
 		goods.setPointRate(Double.parseDouble(pointRate));
 		goods.setEmpCode(loginEmp.getEmpCode());
-		int goodsCode = 0; // insertGoods() 
+
 		
 		GoodsImg goodsImg = new GoodsImg();
-		goodsImg.setGoodsCode(goodsCode);
 		goodsImg.setFilename(filename);
 		goodsImg.setOriginName(originName);
+		goodsImg.setContentType(contentType);
 		goodsImg.setFilesize(filesize);
 		// insertGoodsImg()
 		
@@ -73,7 +75,24 @@ public class AddGoodsController extends HttpServlet {
 		OutputStream os = Files.newOutputStream(saveFile.toPath());
 		// 스트림을 is -> os 전송
 		is.transferTo(os);
-
+		
+		// db입력 
+		goodsDao = new GoodsDao(); // DI : 객체의존성 주입
+		// 1) 상품등록 후 키값 반환
+		// https://cafe.naver.com/jjdev/18456
+		// 2) 1번의 키값으로 이미지를 등록
+		boolean result = goodsDao.insertGoodsAndImg(goods, goodsImg);
+		// db입력 실패시 업로드된 이미지 삭제
+		if(result == false) { // if(!result)
+			// 저장된 이미지(File saveFile = new File(realPath, filename)) 삭제
+			if(saveFile.exists()) {
+				saveFile.delete();
+			}
+			response.sendRedirect(request.getContextPath()+"/emp/addGoods");
+			return;
+		}
+		
+		response.sendRedirect(request.getContextPath()+"/emp/goodsList");
 	}
 
 }
