@@ -10,6 +10,11 @@
 
 <body>
 	<h1>customerIndex</h1>
+	<!-- customer meun include -->
+	<c:import url="/WEB-INF/view/inc/customerMenu.jsp"></c:import>
+	<hr>
+	
+	
 	<div>
 		${loginCustomer.customerName}님 반갑습니다.
 		(point : ${loginCustomer.point})
