@@ -15,7 +15,7 @@
 				<table>
 					<tr>
 						<td>id</td>
-						<td><input value="emp1" type="text" name="id" id="id"></td>
+						<td><input value="customer1" type="text" name="id" id="id"></td>
 					</tr>
 					<tr>
 						<td>pw</td>
@@ -25,8 +25,8 @@
 				<button type="submit">로그인</button>
 			</div>
 			<div>
-				<input type="radio" name="customerOrEmpSel" class="customerOrEmpSel" value="customer">customer
-				<input type="radio" name="customerOrEmpSel" class="customerOrEmpSel" value="emp" checked>emp
+				<input type="radio" name="customerOrEmpSel" class="customerOrEmpSel" value="customer" checked>customer
+				<input type="radio" name="customerOrEmpSel" class="customerOrEmpSel" value="emp">emp
 			</div>
 		</div>
 	</form>
