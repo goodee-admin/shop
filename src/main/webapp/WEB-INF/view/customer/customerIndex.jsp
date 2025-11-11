@@ -23,7 +23,6 @@
 	
 	<h2>베스트 상품목록</h2>
 		<!-- 베스트 : 가장 많이 주문(주문완료)된 상품 5개 -->
-		${bestGoodsList}
 	<div>
 		베스트상품(5개)
 	</div>
@@ -38,14 +37,15 @@
 					<td>
 						<!-- image -->
 						<div>
-							<img src="${pageContext.request.contextPath}/upload/${m.filename}">
+							<img src="${pageContext.request.contextPath}/upload/${m.filename}" width="200" height="200">
 						</div>
 						<!-- 이름, 가격 -->
 						<div>
-							${m.goodsName}<br>
-							$(m.goodsPrice)
-							
-							<br>${state.last}
+							<a href="${pageContext.request.contextPath}/customer/goodsOne?goodsCode=${m.goodsCode}">
+								${m.goodsName}
+							</a>
+							<br>
+							${m.goodsPrice}
 						</div>
 					</td>
 					<c:if test="${state.last == false && state.count % 5 == 0}">
