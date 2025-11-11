@@ -26,7 +26,9 @@
 			<img src="${pageContext.request.contextPath}/upload/${goods.filename}" width="500" height="500">
 		</div>
 		<div>
-			<form>
+			<form id="myForm">
+				<input type="hidden" id="contextPath" value="${pageContext.request.contextPath}">
+				<input type="hidden" name="goodsCode" value="${goods.goodsCode}">
 				<table border="1">
 					<tr>
 						<td>goodsName</td>
@@ -47,7 +49,7 @@
 					<tr>
 						<td>수량</td>
 						<td>
-							<select>
+							<select name="">
 								<c:forEach var="n" begin="1" end="10">
 									<option value="${n}">${n}</option>
 								</c:forEach>
@@ -55,10 +57,25 @@
 						</td>
 					</tr>
 				</table>
-				<button type="button">장바구니</button><!-- insert cart -->
-				<button type="button">바로주문</button><!-- 결제(화면) controller - insert orders  -->
+				<button id="cartBtn" type="button">장바구니</button><!-- insert cart -->
+				<button id="orderBtn" type="button">바로주문</button><!-- 결제(화면) controller - insert orders  -->
 			</form>
 		</div>
 	</div>
+	<script>
+		$('#cartBtn').click(function(){
+			$('#myForm').attr('method', 'post');
+			$('#myForm').attr('action', $('#contextPath').val()+'/customer/insertCart');
+			alert('cartBtn:' + $('#myForm').attr('method') + ',' + $('#myForm').attr('action')); // cart 액션
+			// $('#myForm').submit();
+		});
+		
+		$('#orderBtn').click(function(){
+			$('#myForm').attr('method', 'get');
+			$('#myForm').attr('action', $('#contextPath').val()+'/customer/insertOrders');
+			alert('orderBtn: ' + $('#myForm').attr('method') + ',' + $('#myForm').attr('action')); // orders 화면
+			// $('#myForm').submit();
+		});
+	</script>
 </body>
 </html>
