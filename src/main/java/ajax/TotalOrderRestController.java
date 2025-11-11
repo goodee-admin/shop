@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/totalOrderAndPrice")
-public class TotalOrderAndPriceRestController extends HttpServlet {
+@WebServlet("/totalOrder")
+public class TotalOrderRestController extends HttpServlet {
 	private StatsDao statsDao;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String fromYM = request.getParameter("fromYM");
@@ -24,14 +24,11 @@ public class TotalOrderAndPriceRestController extends HttpServlet {
 
 		response.setContentType("application/json;charset=UTF-8");
 		statsDao = new StatsDao();
-		List<Map<String, Object>> orderMap = statsDao.selectOrderTotalCntByYM(fromYM, toYM);
-		List<Map<String, Object>> priceMap = statsDao.selectOrderTotalPriceByYM(fromYM, toYM);
+		List<Map<String, Object>> orderList = statsDao.selectOrderTotalCntByYM(fromYM, toYM);
 		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("orderMap", orderMap);
-		resultMap.put("priceMap", priceMap);
+
 		Gson gson = new Gson();
-		String jsonResult = gson.toJson(resultMap);
+		String jsonResult = gson.toJson(orderList);
 		PrintWriter out = response.getWriter();
 		out.print(jsonResult);
 		out.flush();
