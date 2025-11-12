@@ -49,7 +49,7 @@
 					<tr>
 						<td>수량</td>
 						<td>
-							<select name="">
+							<select name="cartQuantity">
 								<c:forEach var="n" begin="1" end="10">
 									<option value="${n}">${n}</option>
 								</c:forEach>
@@ -65,16 +65,16 @@
 	<script>
 		$('#cartBtn').click(function(){
 			$('#myForm').attr('method', 'post');
-			$('#myForm').attr('action', $('#contextPath').val()+'/customer/insertCart');
+			$('#myForm').attr('action', $('#contextPath').val()+'/customer/addCart');
 			alert('cartBtn:' + $('#myForm').attr('method') + ',' + $('#myForm').attr('action')); // cart 액션
-			// $('#myForm').submit();
+			$('#myForm').submit();
 		});
 		
 		$('#orderBtn').click(function(){
 			$('#myForm').attr('method', 'get');
-			$('#myForm').attr('action', $('#contextPath').val()+'/customer/insertOrders');
+			$('#myForm').attr('action', $('#contextPath').val()+'/customer/addOrders');
 			alert('orderBtn: ' + $('#myForm').attr('method') + ',' + $('#myForm').attr('action')); // orders 화면
-			// $('#myForm').submit();
+			$('#myForm').submit();
 		});
 	</script>
 </body>
