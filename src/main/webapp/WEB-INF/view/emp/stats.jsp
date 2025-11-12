@@ -24,18 +24,21 @@
 	
 	<br>
 	
-	<button type="button" id="order">특정년도의 월별 주문횟수(누적) : 선 차트</button>
+	<button type="button" id="totalOrderBtn">특정년도의 월별 주문횟수(누적) : 선 차트</button>
 	
-	<button type="button" id="price">특정년도의 월별 주문금액(누적) : 선 차트</button>
+	<button type="button" id="totalPriceBtn">특정년도의 월별 주문금액(누적) : 선 차트</button>
 
-	<button type="button" id="">특정년도의 월별 주문수량 : 막대 차트</button>
+	<button type="button" id="orderBtn">특정년도의 월별 주문수량 : 막대 차트</button>
+	
 	<button type="button" id="">특정년도의 월별 주문금액 : 막대 차트</button>
 	<button type="button" id="">고객별 주문횟수 1위 ~ 10위 : 막대 차트</button>
 	<button type="button" id="">고객별 총금액 1위 ~ 10위 : 막대 차트</button>
 	<button type="button" id="">상품별 주문횟수 1위 ~ 10위 : 막대 차트</button>
 	<button type="button" id="">상품별 주문금액 1위 ~ 10위 : 막대 차트</button>
 	<button type="button" id="">상품별 평균 리뷰평점 1위 ~ 10위 : 막대 차트</button>
-	<button type="button" id="">성별 총주문 금액 : 파이 차트</button>
+	
+	<button type="button" id="genderOrderBtn">성별 총주문 금액 : 파이 차트</button>
+	
 	<button type="button" id="">성별 총주문 수량 : 파이 차트</button>
 
 	<canvas id="myChart" style="width:100%;max-width:700px"></canvas>
@@ -43,9 +46,116 @@
 	<script>
 		let myChart = null;
 		
-		$('#price').click(function(){
+		$('#genderOrderBtn').click(function () {
 			$.ajax({
-				url: $('#contextPath').val()+'/totalPrice'
+				url: $('#contextPath').val()+'/emp/genderOrder'
+				, type: 'get'
+				, success: function (result) {
+					
+					
+					let xValues = [];
+					let yValues = [];
+					
+					result.forEach(function (m) {
+						xValues.push(m.gender);
+						yValues.push(m.cnt)
+					});
+					
+					const barColors = [
+					  "#b91d47",
+					  "#00aba9",
+					];
+
+					const ctx = document.getElementById('myChart');
+					
+					if(myChart != null) {
+						myChart.destroy();
+						console.log('canvas 초기화');
+					}
+					
+					myChart = new Chart(ctx, {
+					  type: "pie",
+					  data: {
+					    labels: xValues,
+					    datasets: [{
+					      backgroundColor: barColors,
+					      data: yValues
+					    }]
+					  },
+					  options: {
+					    plugins: {
+					      legend: {display:true},
+					      title: {
+					        display: true,
+					        text: "남/여 전체 주문량",
+					        font: {size:16}
+					      }
+					    }
+					  }
+					});
+				}
+			});
+		});
+		
+		
+		$('#orderBtn').click(function () {
+			$.ajax({
+				url: $('#contextPath').val()+'/emp/order'
+				, type: 'get'
+				, data: {
+							fromYM: $('#fromYM').val()
+							, toYM: $('#toYM').val()
+						}
+				, success: function (result) {
+					
+					// 막대 차트 소스코드
+					// xValues, yValues : 모델
+					
+					let xValues = [];
+					let yValues = [];
+					
+					result.forEach(function (m) {
+						xValues.push(m.ym);
+						yValues.push(m.cnt)
+					});
+					
+					const barColors = ["red", "green","blue","orange","brown", "yellow"];
+
+					const ctx = document.getElementById('myChart');
+					
+					if(myChart != null) {
+						myChart.destroy();
+						console.log('canvas 초기화');
+					}
+					
+					myChart = new Chart(ctx, {
+					  type: "bar",
+					  data: {
+					    labels: xValues,
+					    datasets: [{
+					      backgroundColor: barColors,
+					      data: yValues
+					    }]
+					  },
+					  options: {
+					    plugins: {
+					      legend: {display: false},
+					      title: {
+					        display: true,
+					        text: "20250101 ~ 현재 월별 판매량",
+					        font: {size: 16}
+					      }
+					    }
+					  }
+					});
+				}
+			});
+		});
+		
+		
+		$('#totalPriceBtn').click(function(){
+			$.ajax({
+				url: $('#contextPath').val()+'/emp/totalPrice'
 				, type: 'get'
 				, data: {
 							fromYM: $('#fromYM').val()
@@ -53,8 +163,7 @@
 						}
 				, success: function(result){ // result --> list
 					console.log(result);					
-					$('#myChart').empty();
-					
+										
 					let x = [];
 					let y = [];
 					
@@ -68,6 +177,7 @@
 					
 					if(myChart != null) {
 						myChart.destroy();
+						console.log('canvas 초기화');
 					} 
 					
 					myChart = new Chart("myChart", {
@@ -90,10 +200,10 @@
 		});
 	
 	
-		$('#order').click(function(){
+		$('#totalOrderBtn').click(function(){
 			// alert('orderAndPrice 클릭');
 			$.ajax({
-				url: $('#contextPath').val()+'/totalOrder'
+				url: $('#contextPath').val()+'/emp/totalOrder'
 				, type: 'get'
 				, data: {
 							fromYM: $('#fromYM').val()
@@ -101,8 +211,7 @@
 						}
 				, success: function(result){ // result --> list
 					console.log(result);					
-					$('#myChart').empty();
-					
+										
 					let x = [];
 					let y = [];
 					
@@ -116,6 +225,7 @@
 					
 					if(myChart != null) {
 						myChart.destroy();
+						console.log('canvas 초기화');
 					} 
 					
 					myChart = new Chart("myChart", {

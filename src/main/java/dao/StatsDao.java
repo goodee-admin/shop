@@ -11,6 +11,84 @@ import java.util.Map;
 
 public class StatsDao {
 	// 11개 chart 메서드
+	public List<Map<String, Object>> selectOrderCntByGender() {
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = """
+			select t.g gender, count(*) cnt
+			from
+			(select c.gender g, o.order_code oc
+			from customer c inner join orders o
+			on c.customer_code = o.customer_code) t
+			group by t.g
+		""";
+		try {
+			conn = DBConnection.getConn();
+			stmt = conn.prepareStatement(sql);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("gender", rs.getString("gender"));
+				map.put("cnt", rs.getInt("cnt"));
+				list.add(map);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	
+	
+	// 월 주문량 - 막대차트
+	public List<Map<String, Object>> selectOrderCntByYM(String fromYM, String toYM) {
+		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = """
+			select to_char(createdate, 'YYYY-MM') ym, count(*) cnt
+			from orders
+			where createdate between to_date(?, 'YYYY-MM-DD') 
+			and to_date(?, 'YYYY-MM-DD')
+			group by to_char(createdate, 'YYYY-MM')
+			order by ym asc
+		""";
+		try {
+			conn = DBConnection.getConn();
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, fromYM);
+			stmt.setString(2, toYM);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("ym", rs.getString("ym"));
+				map.put("cnt", rs.getInt("cnt"));
+				list.add(map);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if(rs != null) rs.close();
+				if(stmt != null) stmt.close();
+				if(conn != null) conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
+	
 	
 	public List<Map<String, Object>> selectOrderTotalCntByYM(String fromYM, String toYM) {
 		List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
