@@ -28,7 +28,7 @@ public class CartDao {
 			on c.goods_code = g.goods_code
 			    inner join goods_img gi
 			    on c.goods_code = gi.goods_code
-			where c.cart_code = ?;
+			where c.cart_code = ?
 		""";
 		Map<String, Object> m = null;
 		try {
@@ -36,13 +36,13 @@ public class CartDao {
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, cartCode);
 			rs = stmt.executeQuery();
-			while(rs.next()) {
+			if(rs.next()) {
 				m = new HashMap<>();
 				m.put("filename", rs.getString("filename"));
 				m.put("goodsCode", rs.getInt("goodsCode"));
 				m.put("goodsName", rs.getString("goodsName"));
 				m.put("goodsPrice", rs.getInt("goodsPrice"));
-				m.put("pointRate", rs.getInt("pointRate"));
+				m.put("pointRate", rs.getDouble("pointRate"));
 				m.put("cartQuantity", rs.getInt("cartQuantity"));
 			}
 		} catch(Exception e) {

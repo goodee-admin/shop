@@ -4,10 +4,41 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import dto.Address;
 
 public class AddressDao {
+	
+	public List<Address> selectAddressList(int customerCode) {
+		List<Address> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = """
+					select address_code addressCode, address 
+					from address where customer_code = ?
+				""";
+		try {
+			conn = DBConnection.getConn();
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, customerCode);
+			rs = stmt.executeQuery();
+			while(rs.next()) {
+				Address a = new Address();
+				a.setAddressCode(rs.getInt("addressCode"));
+				a.setAddress(rs.getString("address"));
+				list.add(a);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			
+		}
+		return list;
+	}
+	
 	public void insertAddress(Address address) {
 		Connection conn = null;
 		PreparedStatement stmt1 = null;
