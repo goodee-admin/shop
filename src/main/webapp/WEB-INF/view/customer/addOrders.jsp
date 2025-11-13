@@ -15,7 +15,7 @@
 	<hr>
 	
 	<div>
-		<form>
+		<form method="post" action="${pageContext.request.contextPath}/customer/addOrders">
 			<table border="1">
 				<tr>
 					<th>filename</th>
@@ -25,6 +25,9 @@
 					<th>cartQuantity</th>
 				</tr>
 				<c:forEach var="m" items="${list}">
+					<input type="hidden" name="goodsCode" value="${m.goodsCode}">
+					<input type="hidden" name="orderQuantity" value="${m.cartQuantity}">
+					<input type="hidden" name="goodsPrice" value="${m.goodsPrice}">
 					<tr>
 						<td><img src="${pageContext.request.contextPath}/upload/${m.filename}"></td>
 						<td>${m.goodsName}</td>
@@ -36,42 +39,34 @@
 			</table>
 			
 			<div>
-				<!-- 배송지 : AJax -->
-				<input type="text" name="addressCode">
+				배송지 선택:
+				<select id="addressList" size="5">
+					<c:forEach var="addr" items="${addressList}">
+						<option class="addrOpt" value="${addr.addressCode}">${addr.address}</option>
+					</c:forEach>
+				</select>
+				
+				<input type="text" id="addressCode" name="addressCode" id="addressCode" readonly>
+				<input type="text" id="address" readonly>
 			</div>
 			<div>
-				<!-- 결제금액, 포인트 사용 -->
-				<div>
-					<!-- 2) -->
-					포인트 사용:
-					<input type="number" name="usePoint" value="0"> 
-					(myPoint : ${loginCustomer.point})
-					<button type="button">포인트사용</button>
-				</div>
-				
 				<div>
 					결제금액 : 
-					<input type="number" name="orderPrice" value="${orderPrice}" readonly> 
+					<input type="number" name="orderPrice" value="${orderPrice}" readonly>
+					<!-- 결제 테이블을 별도로 생성해서 결제코드/결제일자/결제금액/포인트사용금액/..... -->
 				</div>
 			</div>
 			<div>
 				<!-- 3) -->
 				<button type="submit">결제하기(주문완료)</button>
-				(addOrders, updateCustomer(-point), insertPointHistory(+/-))
 			</div>
 		</form>
-		
-		
-		<hr>
-		<div>
-			<!-- 1) -->
-			<button type="button" id="addressBtn">배송지 선택</button>
-			<select id="addressList" size="5">
-				<c:forEach var="addr" items="${addressList}">
-					<option value="${addr.addressCode}">${addr.address}</option>
-				</c:forEach>
-			</select>
-		</div>
 	</div>
+	<script>
+		$('#addressList').dblclick(function() {
+			$('#addressCode').val($('#addressList').val());
+			$('#address').val($('.addrOpt:selected').text());
+		});
+	</script>
 </body>
 </html>
